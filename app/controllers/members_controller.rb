@@ -3,9 +3,9 @@ class MembersController < ApplicationController
   before_action :authorize_owner!, only: [:create, :destroy]
 
   def index
-    @members = @team.members
+    @members = @team.members.page(params[:page]).per(params[:per_page] || 10)
     render json: @members
-  end
+  end  
 
   def create
     @member = @team.members.build(member_params)

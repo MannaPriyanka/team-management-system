@@ -4,7 +4,7 @@ class TeamsController < ApplicationController
   before_action :authorize_owner!, only: [:update, :destroy]
 
   def index
-    @teams = current_user.teams
+    @teams = current_user.teams.page(params[:page]).per(params[:per_page] || 10)
     render json: @teams
   end
 
