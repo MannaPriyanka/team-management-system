@@ -8,4 +8,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "teams#index"
+  
+  # Team and Member routes
+  resources :teams do
+    resources :members, only: [:index, :create, :show, :destroy]
+  end
 end
