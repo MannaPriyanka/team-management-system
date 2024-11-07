@@ -3,9 +3,11 @@ class MembersController < ApplicationController
   before_action :authorize_owner!, only: [:create, :destroy]
 
   def index
-    @members = @team.members.page(params[:page]).per(params[:per_page] || 10)
+    @members = @team.members
+    @members = @members.where("last_name ILIKE ?", "%#{params[:last_name]}%") if params[:last_name].present?
+    @members = @members.page(params[:page]).per(params[:per_page] || 10)
     render json: @members
-  end  
+  end
 
   def create
     @member = @team.members.build(member_params)
