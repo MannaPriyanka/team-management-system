@@ -1,0 +1,98 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/teams/{team_id}/members":
+    parameters:
+    - name: team_id
+      in: path
+      description: team_id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: list members
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create member
+      responses:
+        '200':
+          description: successful
+  "/teams/{team_id}/members/{id}":
+    parameters:
+    - name: team_id
+      in: path
+      description: team_id
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show member
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete member
+      responses:
+        '200':
+          description: successful
+  "/":
+    get:
+      summary: list teams
+      responses:
+        '200':
+          description: successful
+  "/teams":
+    get:
+      summary: list teams
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create team
+      responses:
+        '200':
+          description: successful
+  "/teams/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show team
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update team
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update team
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete team
+      responses:
+        '200':
+          description: successful
+servers:
+- url: http://127.0.0.1:3000/
+  variables:
+    defaultHost:
+      default: www.example.com
