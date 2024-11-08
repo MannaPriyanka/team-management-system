@@ -1,10 +1,10 @@
 class TeamsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_team, only: [:show, :update, :destroy]
-  before_action :authorize_owner!, only: [:update, :destroy]
 
   def index
     @teams = current_user.teams.page(params[:page] || 1).per(params[:per_page] || 10)
+    authorize @teams  # Authorize access to the index action
     render json: @teams, status: :ok
   end
 
@@ -18,10 +18,12 @@ class TeamsController < ApplicationController
   end
 
   def show
+    authorize @team  # Check if the user is authorized to view this team
     render json: @team, status: :ok
   end
 
   def update
+    authorize @team  # Check if the user is authorized to update this team
     if @team.update(team_params)
       render json: { team: @team, message: 'Team updated successfully' }, status: :ok
     else
@@ -30,6 +32,7 @@ class TeamsController < ApplicationController
   end
 
   def destroy
+    authorize @team  # Check if the user is authorized to destroy this team
     @team.destroy
     render json: { message: 'Team deleted successfully' }, status: :no_content
   end
@@ -39,10 +42,6 @@ class TeamsController < ApplicationController
   def set_team
     @team = Team.find_by(id: params[:id])
     render json: { error: 'Team not found' }, status: :not_found unless @team
-  end
-
-  def authorize_owner!
-    render json: { error: 'Forbidden' }, status: :forbidden unless @team.owner == current_user
   end
 
   def team_params

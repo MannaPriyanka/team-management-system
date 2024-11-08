@@ -14,7 +14,7 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = 'e4212ef6d68b5beff82597b452788775ecc8bed6bfb3f0d89713a8c98c170cf688d928801f706ef4d19297266ca6ea8e4ca8354ee90d203553427440e82fba4e'
+  # config.secret_key = '585d6ccce3fd6bc7fd947675ab02ebeb4a11c72fc4a9dc603453b573c25c9b24c865844afbbcc64691c4c42a5ff99a3b1e1928a21cf933834ce7873544adaef2'
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -99,6 +99,17 @@ Devise.setup do |config|
   # passing skip: :sessions to `devise_for` in your config/routes.rb
   config.skip_session_storage = [:http_auth]
 
+  config.jwt do |jwt|
+    jwt.secret = Rails.application.secrets.secret_key_base
+    jwt.dispatch_requests = [
+      ['POST', %r{^/users/sign_in$}]
+    ]
+    jwt.revocation_requests = [
+      ['DELETE', %r{^/users/sign_out$}]
+    ]
+    jwt.expiration_time = 1.day.to_i
+  end
+  
   # By default, Devise cleans up the CSRF token on authentication to
   # avoid CSRF token fixation attacks. This means that, when using AJAX
   # requests for sign in and sign up, you need to get a new CSRF token
@@ -126,7 +137,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 12
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = '1ad51babe59c64e7d8aab7d6e3843f95bc12c2586334f53c4721734fc37dfcc6030ecdd50949910c78025f1c27647f5286171f415b407cf797acb50f60ce11a5'
+  # config.pepper = '060f08ea7391c23c0ce30a802f3e758731d01e23c0041a55351c1a23012069a74be66b49574d132ca3616f8aea4d328bd13a5b7ec429735a8a723cb22f72c44d'
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false

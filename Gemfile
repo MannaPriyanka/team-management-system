@@ -37,6 +37,8 @@ gem "bootsnap", require: false
 
 # Use for authentication
 gem 'devise'
+gem 'devise-jwt'
+gem 'pundit'
 
 # For pagination
 gem 'kaminari'
